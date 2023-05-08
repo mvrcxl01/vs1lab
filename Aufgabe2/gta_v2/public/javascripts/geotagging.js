@@ -63,7 +63,7 @@ class LocationHelper {
  * A class to help using the MapQuest map service.
  */
 class MapManager {
-    #apiKey = '';
+    #apiKey = '6cSQFr0Zv4qj2qYe1QI64iL9erFIRwEy';
 
     /**
      * Create a new MapManager instance.
@@ -103,8 +103,16 @@ class MapManager {
  * It is called once the page has been fully loaded.
  */
 // ... your code here ...
-
+function updateLocation() {
+    LocationHelper.findLocation((location) => {
+        document.getElementById("latitude").value = location.latitude;
+        document.getElementById("longitude").value = location.longitude;
+        document.getElementById("latitudeSearch").value = location.latitude;
+        document.getElementById("longitudeSearch").value = location.longitude;
+        document.getElementById("mapView").src = new MapManager('6cSQFr0Zv4qj2qYe1QI64iL9erFIRwEy').getMapUrl(location.latitude, location.longitude);
+    });
+}
 // Wait for the page to fully load its DOM content, then call updateLocation
 document.addEventListener("DOMContentLoaded", () => {
-    alert("Please change the script 'geotagging.js'");
+    updateLocation();
 });

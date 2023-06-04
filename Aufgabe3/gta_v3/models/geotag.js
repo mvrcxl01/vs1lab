@@ -11,7 +11,11 @@
  */
 class GeoTag {
 
-    // TODO: ... your code here ...
+    name='default';
+    latitude="default";
+    longitude="default"
+    hashtag="default";
+
     
 }
 

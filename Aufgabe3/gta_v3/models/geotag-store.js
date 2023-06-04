@@ -5,6 +5,8 @@
  * Complete all TODOs in the code documentation.
  */
 
+const GeoTagExamples = require("./geotag-examples");
+
 /**
  * A class for in-memory-storage of geotags
  * 
@@ -25,8 +27,23 @@
  */
 class InMemoryGeoTagStore{
 
-    // TODO: ... your code here ...
+    #geoTags = GeoTagExamples.tagList;
+    addGeoTag(geoTag){
+        this.#geoTags.push(geoTag);
+    }
 
+    removeGeoTag(name){
+        this.#geoTags = this.#geoTags.filter(geoTag => geoTag.name !== name);
+    }
+
+    getNearbyGeoTags(location) {
+        //return this.#geoTags.filter(geoTag => (geoTag.longitude >= location.longitude - 0.0001 || geoTag.longitude <= location.longitude + 0.0001) && (geoTag.latitude >= location.latitude -0.0001 || geoTag.latitude <= location.latitude + 0.0001));
+        return this.#geoTags.filter(geoTag => ((Math.sqrt(Math.abs(geoTag.longitude - location.longitude) ** 2 + Math.abs(geoTag.latitude - location.latitude) ** 2)) <= 0.05));
+    }
+
+    searchNearbyGeoTags(location, keyword) {
+        return this.getNearbyGeoTags(location).filter(geoTag => geoTag.name.includes(keyword) || geoTag.hashtag.includes(keyword));
+    }
 }
 
 module.exports = InMemoryGeoTagStore

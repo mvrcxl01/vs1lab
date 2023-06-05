@@ -13,7 +13,7 @@ class GeoTag {
 
     name='default';
     latitude="default";
-    longitude="default"
+    longitude="default";
     hashtag="default";
 
     constructor(name, latitude, longitude, hashtag) {

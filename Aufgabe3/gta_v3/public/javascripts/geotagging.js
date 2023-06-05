@@ -24,8 +24,8 @@ function updateLocation() {
     if(document.getElementById("latitude").value && document.getElementById("longitude").value
         && document.getElementById("latitudeSearch").value && document.getElementById("longitudeSearch").value)
     {
-        document.getElementById("mapView").src= new mapManager.getUrl(document.getElementById(("latitude"),
-            document.getElementById("longitude"), JSON.parse(document.getElementById("mapView").getAttribute("data-tags"))))
+        document.getElementById("mapView").src= new MapManager().getMapUrl(document.getElementById("latitude").value,
+            document.getElementById("longitude").value, JSON.parse(document.getElementById("mapView").getAttribute("data-tags")));
         return;
     }
     LocationHelper.findLocation((location) => {

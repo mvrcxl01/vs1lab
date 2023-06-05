@@ -62,10 +62,10 @@ router.get('/', (req, res) => {
  */
 
 // TODO: ... your code here ...
-router.get('/tagging', function(req, res)  {
+router.post('/tagging', function(req, res)  {
   const radius = 10;
   geoTagStore.addGeoTag(new GeoTag(req.body.name, req.body.latitude, req.body.longitude, req.body.hashtag));
-  res.render('index', {taglist:geoTagStore.getNearbyGeoTags(req.body.latitude, req.body.longitude, radius)});
+  res.render('index', {taglist:geoTagStore.getNearbyGeoTags(req.body.latitude, req.body.longitude, radius), latitude: req.body.latitude, longitude: req.body.longitude});
 });
 
 /**
@@ -85,9 +85,10 @@ router.get('/tagging', function(req, res)  {
  */
 
 // TODO: ... your code here ...
-router.get('/discovery', function(req, res) {
+router.post('/discovery', function(req, res) {
     const radius = 10;
-  res.render('index', { taglist: geoTagStore.searchNearbyGeoTags(req.body.latitude, req.body.longitude, radius, req.body.search) })
+    //console.log(geoTagStore.searchNearbyGeoTags(req.body.latitude, req.body.longitude, radius , req.body.search));
+  res.render('index', { taglist: geoTagStore.searchNearbyGeoTags(req.body.latitude, req.body.longitude, radius, req.body.search),latitude: req.body.latitude, longitude: req.body.longitude })
 });
 
 module.exports = router;

@@ -38,10 +38,10 @@
                 </legend>
 
                 <label for="latitude">Latitude:</label>
-                <input type="text" id="latitude" name="latitude" value="49.01379" disabled>
+                <input type="text" id="latitude" name="latitude" <% if(latitude) { %> value=<%= latitude %> <% } %> disabled>
 
                 <label for="longitude">Longitude:</label>
-                <input type="text" id="longitude" name="longitude" value="8.390071" disabled>
+                <input type="text" id="longitude" name="longitude" <% if(longitude) {%> value=<%= longitude%> <%} %> disabled>
 
                 <label for="name">Name:</label>
                 <input type="text" id="name" name="name" placeholder="e.g. Central Berlin" required>
@@ -69,9 +69,9 @@
                     Search
                 </legend>
 
-                <input type="hidden" id="latitudeSearch" name="latitude" value=<% if(latitude) { %> value=<%= latitude %> <% } %> />
+                <input type="hidden" id="latitudeSearch" name="latitude" <% if(latitude) { %> value=<%= latitude %> <% } %> />
 
-                <input type="hidden" id="longitudeSearch" name="longitude" value=<% if (longitude) { %> value=<%= longitude %> <% } %> />
+                <input type="hidden" id="longitudeSearch" name="longitude" <% if (longitude) { %> value=<%= longitude %> <% } %> />
                 <label for="search">Search term or keywords:</label>
                 <input type="text" id="search" name="search" placeholder="e.g. Berlin" required>
 
@@ -84,12 +84,14 @@
         <div class="discovery__wrapper row">
             <div class="discovery__taglist col-5">
                 <ul class="discovery__results" id="discoveryResults">
-
+                    <% if (taglist !== undefined) taglist.forEach(function(gtag) { %>
+                        <li><%= gtag.name %> ( <%= gtag.latitude %>,<%= gtag.longitude %>) <%= gtag.hashtag %> </li>
+                    <% }); %>
                 </ul>
             </div>
 
             <div class="discovery__map col-7">
-                <img src="./images/mapview.jpg" alt="a map with locations" id="mapView" />
+                <img src="./images/mapview.jpg" alt="a map with locations" id="mapView" <% if(taglist) { %> data-tags="<%=JSON.stringify(taglist) %> <% } %>" />
                 <span>Result map</span>
             </div>
         </div>
@@ -108,3 +110,5 @@
     ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="./javascripts/geotagging.js"></script>
+<script src="./javascripts/map-manager.js"></script>
+<script src="./javascripts/location-helper.js"></script>

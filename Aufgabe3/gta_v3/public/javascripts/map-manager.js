@@ -5,14 +5,14 @@
  */
 // eslint-disable-next-line no-unused-vars
 class MapManager {
-    #apiKey
+    #apiKey = '6cSQFr0Zv4qj2qYe1QI64iL9erFIRwEy'
 
     /**
      * Create a new MapManager instance
      * @param {string} apiKey Your MapQuest API Key
      */
     constructor(apiKey) {
-        this.#apiKey = apiKey;
+        this.#apiKey = '6cSQFr0Zv4qj2qYe1QI64iL9erFIRwEy';
     }
 
     /**

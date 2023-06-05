@@ -43,7 +43,7 @@ const geoTagStore = new GeoTagStore();
 
 // TODO: extend the following route example if necessary
 router.get('/', (req, res) => {
-  res.render('index', { taglist: geoTagStore, latitude: undefined, longitude: undefined })
+  res.render('index', { taglist: [], latitude: undefined, longitude: undefined })
 });
 
 /**

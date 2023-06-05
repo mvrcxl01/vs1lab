@@ -6,6 +6,7 @@
  */
 
 const GeoTagExamples = require("./geotag-examples");
+const GeoTag = require("./geotag");
 
 /**
  * A class for in-memory-storage of geotags
@@ -27,7 +28,12 @@ const GeoTagExamples = require("./geotag-examples");
  */
 class InMemoryGeoTagStore{
 
-    #geoTags = GeoTagExamples.tagList;
+    #geoTags = [];
+    constructor(){
+        GeoTagExamples.tagList.forEach(geoTag => this.addGeoTag(geoTag));
+        console.log(this.#geoTags)
+    }
+
     addGeoTag(geoTag){
         this.#geoTags.push(geoTag);
     }
@@ -36,13 +42,12 @@ class InMemoryGeoTagStore{
         this.#geoTags = this.#geoTags.filter(geoTag => geoTag.name !== name);
     }
 
-    getNearbyGeoTags(location) {
-        //return this.#geoTags.filter(geoTag => (geoTag.longitude >= location.longitude - 0.0001 || geoTag.longitude <= location.longitude + 0.0001) && (geoTag.latitude >= location.latitude -0.0001 || geoTag.latitude <= location.latitude + 0.0001));
-        return this.#geoTags.filter(geoTag => ((Math.sqrt(Math.abs(geoTag.longitude - location.longitude) ** 2 + Math.abs(geoTag.latitude - location.latitude) ** 2)) <= 0.05));
+    getNearbyGeoTags(latitude, longitude, radius) {
+        return this.#geoTags.filter(geoTag => ((Math.sqrt(Math.abs(geoTag.longitude - longitude) ** 2 + Math.abs(geoTag.latitude - latitude) ** 2)) <= radius));
     }
 
-    searchNearbyGeoTags(location, keyword) {
-        return this.getNearbyGeoTags(location).filter(geoTag => geoTag.name.includes(keyword) || geoTag.hashtag.includes(keyword));
+    searchNearbyGeoTags(latitude, longitude, radius, keyword) {
+        return this.getNearbyGeoTags(latitude, longitude, radius).filter(geoTag => geoTag.name.includes(keyword) || geoTag.hashtag.includes(keyword));
     }
 }
 

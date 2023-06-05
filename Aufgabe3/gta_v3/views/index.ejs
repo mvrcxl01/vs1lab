@@ -69,14 +69,9 @@
                     Search
                 </legend>
 
-                <input type="hidden" id="latitudeSearch" name="latitude" value=<% if (taglist !== undefined) taglist.forEach(function(gtag) { %>
-                    <li><%= gtag.name %> ( <%= gtag.latitude %>,<%= gtag.longitude %>) <%= gtag.hashtag %> </li>
-                <% }); %>>
+                <input type="hidden" id="latitudeSearch" name="latitude" value=<% if(latitude) { %> value=<%= latitude %> <% } %> />
 
-                <input type="hidden" id="longitudeSearch" name="longitude" value=<% if (taglist !== undefined) taglist.forEach(function(gtag) { %>
-                    <li><%= gtag.name %> ( <%= gtag.latitude %>,<%= gtag.longitude %>) <%= gtag.hashtag %> </li>
-                <% }); %>>
-
+                <input type="hidden" id="longitudeSearch" name="longitude" value=<% if (longitude) { %> value=<%= longitude %> <% } %> />
                 <label for="search">Search term or keywords:</label>
                 <input type="text" id="search" name="search" placeholder="e.g. Berlin" required>
 
@@ -89,8 +84,7 @@
         <div class="discovery__wrapper row">
             <div class="discovery__taglist col-5">
                 <ul class="discovery__results" id="discoveryResults">
-                    <li>Castle (49.01379, 8.404435) #sight</li>
-                    <li>IWI (49.01379, 8.390071) #edu</li>
+
                 </ul>
             </div>
 

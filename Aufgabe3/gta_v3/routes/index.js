@@ -64,7 +64,9 @@ router.get('/', (req, res) => {
 // TODO: ... your code here ...
 router.post('/tagging', function(req, res)  {
   const radius = 10;
-  geoTagStore.addGeoTag(new GeoTag(req.body.name, req.body.latitude, req.body.longitude, req.body.hashtag));
+  test =new GeoTag(req.body.name, req.body.latitude, req.body.longitude, req.body.hashtag);
+  geoTagStore.addGeoTag(test);
+  console.log(req.body);
   res.render('index', {taglist:geoTagStore.getNearbyGeoTags(req.body.latitude, req.body.longitude, radius), latitude: req.body.latitude, longitude: req.body.longitude});
 });
 

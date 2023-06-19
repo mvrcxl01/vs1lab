@@ -26,7 +26,7 @@ const GeoTag = require('../models/geotag');
  */
 // eslint-disable-next-line no-unused-vars
 const GeoTagStore = require('../models/geotag-store');
-
+const geoTagStore = new GeoTagStore();
 // App routes (A3)
 
 /**
@@ -58,7 +58,20 @@ router.get('/', (req, res) => {
  */
 
 // TODO: ... your code here ...
-
+router.get('/api/geotags', (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    let radius= 10;
+    let tempGT = geoTagStore.getGeoTags();
+    if (req.query) {
+      if(req.body.latitude && req.body.longitude) {
+        res.json(geoTagStore.searchNearbyGeoTags(req.body.latitude, req.body.longitude, radius, req.query));
+      }
+        res.json(tempGT.filter(geoTag => geoTag.name.includes(req.query) || geoTag.hashtag.includes(req.query)));
+    }
+    res.json(tempGT);
+    //Frage: Wie kann ich das JSON renderen lassen?
+  //res.render('index', { taglist:geoTagStore.getNearbyGeoTags(req.body.latitude, req.body.longitude, 10), latitude: req.body.latitude, longitude: req.body.longitude});
+});
 
 /**
  * Route '/api/geotags' for HTTP 'POST' requests.
@@ -72,6 +85,13 @@ router.get('/', (req, res) => {
  */
 
 // TODO: ... your code here ...
+router.post('/api/geotags', (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    let tempGT = new GeoTag(req.body.name, req.body.latitude, req.body.longitude, req.body.hashtag, geoTagStore.getNewID());
+    geoTagStore.addGeoTag(tempGT);
+    //res.location(req.header); //Frage: Wie wird auf die Adresse zugegriffen?
+    res.json(tempGT);
+});
 
 
 /**
@@ -85,6 +105,14 @@ router.get('/', (req, res) => {
  */
 
 // TODO: ... your code here ...
+router.get('/api/geotags/:id', (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    let tempGT = geoTagStore.getGeoTags().filter(geoTag => geoTag.id === req.params.id);
+        if (tempGT) {
+        res.json(tempGT);
+        }
+        res.status(404).end();
+});
 
 
 /**
@@ -102,6 +130,18 @@ router.get('/', (req, res) => {
  */
 
 // TODO: ... your code here ...
+router.put('/api/geotags/:id', (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    let tempGT = geoTagStore.getGeoTags().filter(geoTag => geoTag.id === req.params.id);
+    if (tempGT) {
+        tempGT.name = req.body.name;
+        tempGT.latitude = req.body.latitude;
+        tempGT.longitude = req.body.longitude;
+        tempGT.hashtag = req.body.hashtag;
+        res.json(tempGT);
+    }
+    res.status(404).end();
+});
 
 
 /**
@@ -116,6 +156,15 @@ router.get('/', (req, res) => {
  */
 
 // TODO: ... your code here ...
+router.delete('/api/geotags/:id', (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    let tempGT = geoTagStore.getGeoTags().filter(geoTag => geoTag.id === req.params.id);
+    if (tempGT) {
+        geoTagStore.removeGeoTag(tempGT);
+        res.json(tempGT);
+    }
+    res.status(404).end();
+});
 
 
 
@@ -137,9 +186,7 @@ router.get('/', (req, res) => {
 // TODO: ... your code here ...
 router.post('/tagging', function(req, res)  {
   const radius = 10;
-  test =new GeoTag(req.body.name, req.body.latitude, req.body.longitude, req.body.hashtag);
-  geoTagStore.addGeoTag(test);
-  console.log(req.body);
+  geoTagStore.addGeoTag(new GeoTag(req.body.name, req.body.latitude, req.body.longitude, req.body.hashtag, geoTagStore.getNewID()));
   res.render('index', {taglist:geoTagStore.getNearbyGeoTags(req.body.latitude, req.body.longitude, radius), latitude: req.body.latitude, longitude: req.body.longitude});
 });
 
@@ -162,8 +209,6 @@ router.post('/tagging', function(req, res)  {
 // TODO: ... your code here ...
 router.post('/discovery', function(req, res) {
   const radius = 10;
-  //console.log(geoTagStore.searchNearbyGeoTags(req.body.latitude, req.body.longitude, radius , req.body.search));
   res.render('index', { taglist: geoTagStore.searchNearbyGeoTags(req.body.latitude, req.body.longitude, radius, req.body.search),latitude: req.body.latitude, longitude: req.body.longitude })
 });
-
 module.exports = router;

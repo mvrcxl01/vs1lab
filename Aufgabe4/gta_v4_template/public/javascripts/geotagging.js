@@ -7,7 +7,8 @@
 // "console.log" writes to the browser's console. 
 // The console window must be opened explicitly in the browser.
 // Try to find this output in the browser...
-console.log("The geoTagging script is going to start...");
+
+
 
 /**
  * A class to help using the HTML5 Geolocation API.
@@ -40,4 +41,60 @@ function updateLocation() {
 // Wait for the page to fully load its DOM content, then call updateLocation
 document.addEventListener("DOMContentLoaded", () => {
     updateLocation();
+});
+
+function fetchGeoTags(){
+    fetch('http://localhost:3000/api/geotags/?' + new URLSearchParams({
+        'search': document.getElementById('search').value,
+        'longitude': document.getElementById('longitude').value,
+        'latitude': document.getElementById('latitude').value,
+    }), {
+        method: 'GET',
+    })
+        .then(res => res.json())
+        .then(geoTags => {
+            let list = document.getElementById("discoveryResults");
+            list.innerHTML = "";
+            for(let geoTag of geoTags){
+                let entry = document.createElement('li');
+                entry.appendChild(document.createTextNode(
+                    geoTag.name + ' ('
+                    + geoTag.latitude + ','
+                    + geoTag.longitude + ') '
+                    + geoTag.hashtag));
+                list.appendChild(entry);
+            }
+            document.getElementById("mapView").setAttribute("src", new MapManager().getMapUrl(
+                    document.getElementById('latitude').value,
+                    document.getElementById('longitude').value,
+                    geoTags));
+        })
+}
+
+document.getElementById('addTag').addEventListener('click', function(e){
+    e.preventDefault();
+    if ((document.getElementById("hashtag").value.startsWith('#')&&document.getElementById("hashtag").value.length <=10)
+        &&(document.getElementById("name").value.length<=10)){
+        var geoTag = {};
+        geoTag.name = document.getElementById("name").value;
+        geoTag.latitude = document.getElementById("latitude").value;
+        geoTag.longitude = document.getElementById("longitude").value;
+        geoTag.hashtag = document.getElementById("hashtag").value;
+
+        fetch('http://localhost:3000/api/geotags', {
+            method: 'POST',
+            body: JSON.stringify(geoTag),
+            headers: {
+                "Content-Type": "application/json",
+            }
+        }).then(_ =>{
+            fetchGeoTags();
+        })
+    }
+});
+
+
+document.getElementById('searchButton').addEventListener('click', function(e){
+    e.preventDefault();
+    fetchGeoTags();
 });

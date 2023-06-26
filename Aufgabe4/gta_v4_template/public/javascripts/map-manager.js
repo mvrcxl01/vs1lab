@@ -11,7 +11,7 @@ class MapManager {
      * Create a new MapManager instance
      * @param {string} apiKey Your MapQuest API Key
      */
-    constructor(apiKey) {
+    constructor() {
         this.#apiKey = '6cSQFr0Zv4qj2qYe1QI64iL9erFIRwEy';
     }
 

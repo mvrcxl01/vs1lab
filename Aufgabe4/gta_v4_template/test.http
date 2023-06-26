@@ -1,0 +1,24 @@
+### Search all
+GET http://localhost:3000/api/geotags
+
+### Search Tag (Searchterm)
+GET http://localhost:3000/api/geotags?searchterm=kevin
+
+### Add new Tag
+POST http://localhost:3000/api/geotags
+Content-Type: application/json
+
+//{}
+{"name":"Kevin","latitude":"1","longitude":"1","hashtag":"#Huso"}
+
+### GET ID
+GET http://localhost:3000/api/geotags/11
+
+### Update Tag
+PUT http://localhost:3000/api/geotags/11
+Content-Type: application/json
+
+{"name":"Tim","latitude":"2","longitude":"2","hashtag":"#PissDich"}
+
+###DELETE Tag
+DELETE http://localhost:3000/api/geotags/11

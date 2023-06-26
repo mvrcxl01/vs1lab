@@ -100,8 +100,9 @@ router.post('/api/geotags', (req, res) => {
 
 // TODO: ... your code here ...
 router.get('/api/geotags/:id', (req, res) => {
-    let tempGT = geoTagStore.getGeoTags().filter(geoTag => geoTag.id === req.params.id);
-        if (tempGT[0]) {
+    console.log(req.params.id);
+    let tempGT = geoTagStore.getGeoTags().filter(geoTag => geoTag.id === Number(req.params.id));
+        if (tempGT) {
         res.json(tempGT);
         }
         res.status(404).end();
@@ -124,13 +125,13 @@ router.get('/api/geotags/:id', (req, res) => {
 
 // TODO: ... your code here ...
 router.put('/api/geotags/:id', (req, res) => {
-    let tempGT = geoTagStore.getGeoTags().filter(geoTag => geoTag.id === req.params.id);
-    if (tempGT) {
-        tempGT.name = req.body.name;
-        tempGT.latitude = req.body.latitude;
-        tempGT.longitude = req.body.longitude;
-        tempGT.hashtag = req.body.hashtag;
-        res.json(tempGT);
+    let tempGT = geoTagStore.getGeoTags().filter(geoTag => geoTag.id === Number(req.params.id));
+    if (tempGT[0]) {
+        tempGT[0].name = req.body.name;
+        tempGT[0].latitude = req.body.latitude;
+        tempGT[0].longitude = req.body.longitude;
+        tempGT[0].hashtag = req.body.hashtag;
+        res.json(tempGT[0]);
     }
     res.status(404).end();
 });
@@ -149,10 +150,10 @@ router.put('/api/geotags/:id', (req, res) => {
 
 // TODO: ... your code here ...
 router.delete('/api/geotags/:id', (req, res) => {
-    let tempGT = geoTagStore.getGeoTags().filter(geoTag => geoTag.id === req.params.id);
-    if (tempGT) {
-        geoTagStore.removeGeoTag(tempGT);
-        res.json(tempGT);
+    let tempGT = geoTagStore.getGeoTags().filter(geoTag => geoTag.id === Number(req.params.id));
+    if (tempGT[0]) {
+        geoTagStore.removeGeoTag(Number(req.params.id));
+        res.json(tempGT[0]);
     }
     res.status(404).end();
 });

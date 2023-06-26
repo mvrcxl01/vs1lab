@@ -47,8 +47,8 @@ class InMemoryGeoTagStore{
         return this.#geoTags;
     }
 
-    removeGeoTag(name){
-        this.#geoTags = this.#geoTags.filter(geoTag => geoTag.name !== name);
+    removeGeoTag(id){
+        this.#geoTags = this.#geoTags.filter(geoTag => geoTag.id !== id);
     }
 
     getNearbyGeoTags(latitude, longitude, radius) {
